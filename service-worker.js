@@ -1,9 +1,9 @@
-const CACHE_NAME = "db-ticket-watcher-v2";
+const CACHE_NAME = "db-ticket-watcher-v3";
 const APP_ASSETS = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./app.js",
+  "./styles.css?v=4",
+  "./app.js?v=4",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
