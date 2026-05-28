@@ -17,6 +17,8 @@ const sampleButton = document.querySelector("#sampleButton");
 const checkAllButton = document.querySelector("#checkAllButton");
 const template = document.querySelector("#routeCardTemplate");
 const appToast = document.querySelector("#appToast");
+const screens = [...document.querySelectorAll(".app-screen")];
+const tabButtons = [...document.querySelectorAll(".tab-button")];
 
 const STATION_ALIASES = new Map(
   Object.entries({
@@ -112,6 +114,22 @@ function showToast(message) {
   appToast.classList.add("show");
   window.clearTimeout(showToast.timeout);
   showToast.timeout = window.setTimeout(() => appToast.classList.remove("show"), 4000);
+}
+
+function showScreen(screenName) {
+  for (const screen of screens) {
+    const isActive = screen.dataset.screen === screenName;
+    screen.hidden = !isActive;
+    screen.classList.toggle("active", isActive);
+  }
+
+  for (const button of tabButtons) {
+    const isActive = button.dataset.targetScreen === screenName;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function normalizeStationName(value) {
@@ -624,6 +642,7 @@ routeForm.addEventListener("submit", async (event) => {
   routes = [route, ...routes];
   saveRoutes();
   checkRoute(route.id, true);
+  showScreen("saved");
   routeForm.reset();
   setDefaultDateTime();
 });
@@ -664,6 +683,7 @@ ticketForm.addEventListener("submit", async (event) => {
   routes = [route, ...routes];
   saveRoutes();
   renderRoutes();
+  showScreen("saved");
   showToast("Saved exact DB ticket link. Use Check now to reopen it and Update price after checking DB.");
   ticketForm.reset();
 });
@@ -694,6 +714,10 @@ formFields.from.addEventListener("input", refreshStationSuggestions);
 formFields.to.addEventListener("input", refreshStationSuggestions);
 
 checkAllButton.addEventListener("click", () => checkAllRoutes(true));
+
+for (const button of tabButtons) {
+  button.addEventListener("click", () => showScreen(button.dataset.targetScreen));
+}
 
 setDefaultDateTime();
 updateNotificationStatus();
