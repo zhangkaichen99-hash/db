@@ -1,0 +1,25 @@
+{
+  "name": "DB Last-Minute Ticket Watcher",
+  "short_name": "DB Watcher",
+  "description": "Save DB route and exact ticket price watches with booking links and browser notifications.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f9fbfc",
+  "theme_color": "#ec0016",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

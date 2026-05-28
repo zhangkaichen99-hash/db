@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ec0016" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DB Watcher" />
+    <meta name="description" content="Save DB route and exact ticket price watches with booking links and browser notifications." />
+    <title>DB Last-Minute Ticket Watcher</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="icon" href="./icons/icon-192.png" sizes="192x192" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-labelledby="app-title">
+        <div class="title-row">
+          <div>
+            <p class="eyebrow">Deutsche Bahn route monitor</p>
+            <h1 id="app-title">Last-minute ticket watcher</h1>
+          </div>
+          <div class="status-pill" id="notificationStatus">Notifications idle</div>
+        </div>
+
+        <div class="route-board" aria-hidden="true">
+          <div class="train-window"></div>
+          <div class="track-line">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <aside class="install-hint" aria-label="iPhone install instructions">
+          <strong>Install on iPhone</strong>
+          <span>Open this page in Safari, tap Share, then Add to Home Screen.</span>
+        </aside>
+
+        <form id="routeForm" class="route-form">
+          <div class="field-grid">
+            <label>
+              <span>From</span>
+              <input id="from" name="from" type="text" placeholder="Berlin Hbf" list="stationSuggestions" autocomplete="off" required />
+            </label>
+            <label>
+              <span>To</span>
+              <input id="to" name="to" type="text" placeholder="München Hbf" list="stationSuggestions" autocomplete="off" required />
+            </label>
+            <label>
+              <span>Travel date</span>
+              <input id="date" name="date" type="date" required />
+            </label>
+            <label>
+              <span>Departure time</span>
+              <input id="time" name="time" type="time" required />
+            </label>
+            <label>
+              <span>Alert below</span>
+              <div class="money-input">
+                <span>€</span>
+                <input id="threshold" name="threshold" type="number" min="1" step="1" value="35" required />
+              </div>
+            </label>
+            <label>
+              <span>Last-minute window</span>
+              <select id="windowHours" name="windowHours">
+                <option value="6">6 hours before departure</option>
+                <option value="12">12 hours before departure</option>
+                <option value="24" selected>24 hours before departure</option>
+                <option value="48">48 hours before departure</option>
+                <option value="168">1 week before departure</option>
+              </select>
+            </label>
+            <label>
+              <span>Travellers</span>
+              <select id="travellers" name="travellers">
+                <option value="1" selected>1 adult</option>
+                <option value="2">2 adults</option>
+                <option value="3">3 adults</option>
+                <option value="4">4 adults</option>
+                <option value="5">5 adults</option>
+                <option value="6">6 adults</option>
+              </select>
+            </label>
+            <label>
+              <span>BahnCard</span>
+              <select id="bahnCard" name="bahnCard">
+                <option value="none" selected>No BahnCard</option>
+                <option value="25">BahnCard 25, 2nd class</option>
+                <option value="50">BahnCard 50, 2nd class</option>
+                <option value="25-first">BahnCard 25, 1st class</option>
+                <option value="50-first">BahnCard 50, 1st class</option>
+              </select>
+            </label>
+          </div>
+
+          <datalist id="stationSuggestions">
+            <option value="Berlin Hbf"></option>
+            <option value="Aachen Hbf"></option>
+            <option value="München Hbf"></option>
+            <option value="Hamburg Hbf"></option>
+            <option value="Frankfurt(Main)Hbf"></option>
+            <option value="Köln Hbf"></option>
+            <option value="Stuttgart Hbf"></option>
+            <option value="Düsseldorf Hbf"></option>
+            <option value="Dortmund Hbf"></option>
+            <option value="Leipzig Hbf"></option>
+            <option value="Hannover Hbf"></option>
+            <option value="Nürnberg Hbf"></option>
+            <option value="Bremen Hbf"></option>
+            <option value="Dresden Hbf"></option>
+          </datalist>
+
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Activate notification</button>
+            <button class="ghost-button" type="button" id="sampleButton">Use sample route</button>
+          </div>
+        </form>
+
+        <form id="ticketForm" class="ticket-form" aria-label="Save exact DB ticket link">
+          <div>
+            <p class="eyebrow">Exact ticket watch</p>
+            <h2>Save a selected DB ticket</h2>
+          </div>
+          <label>
+            <span>DB ticket or result URL</span>
+            <input id="ticketUrl" name="ticketUrl" type="url" placeholder="https://www.bahn.de/buchung/..." required />
+          </label>
+          <div class="field-grid">
+            <label>
+              <span>Current price seen</span>
+              <div class="money-input">
+                <span>€</span>
+                <input id="ticketCurrentPrice" name="ticketCurrentPrice" type="number" min="0" step="0.01" placeholder="89.99" />
+              </div>
+            </label>
+            <label>
+              <span>Alert below</span>
+              <div class="money-input">
+                <span>€</span>
+                <input id="ticketThreshold" name="ticketThreshold" type="number" min="1" step="1" value="60" required />
+              </div>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Save exact ticket</button>
+          </div>
+        </form>
+        <div class="toast" id="appToast" role="status" aria-live="polite"></div>
+      </section>
+
+      <aside class="saved-panel" aria-labelledby="saved-title">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Saved block</p>
+            <h2 id="saved-title">Watched routes</h2>
+          </div>
+          <button class="icon-button" type="button" id="checkAllButton" title="Check all saved routes" aria-label="Check all saved routes">
+            ↻
+          </button>
+        </div>
+        <div id="savedRoutes" class="saved-routes"></div>
+      </aside>
+    </main>
+
+    <template id="routeCardTemplate">
+      <article class="route-card">
+        <div class="card-topline">
+          <div>
+            <h3 class="route-name"></h3>
+            <p class="route-date"></p>
+          </div>
+          <span class="price-chip"></span>
+        </div>
+        <dl class="watch-data">
+          <div>
+            <dt>Target</dt>
+            <dd class="target-price"></dd>
+          </div>
+          <div>
+            <dt>Status</dt>
+            <dd class="watch-status"></dd>
+          </div>
+        </dl>
+        <div class="booking-link-row">
+          <a class="booking-link" target="_blank" rel="noreferrer">Open DB booking</a>
+        </div>
+        <div class="card-actions">
+          <button class="secondary-button check-route" type="button">Check now</button>
+          <button class="secondary-button update-price" type="button">Update price</button>
+          <button class="secondary-button test-alert" type="button">Test alert</button>
+          <button class="danger-button delete-route" type="button">Delete</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
