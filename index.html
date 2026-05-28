@@ -12,11 +12,11 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
     <link rel="icon" href="./icons/icon-192.png" sizes="192x192" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=4" />
   </head>
   <body>
     <main class="app-shell">
-      <section class="workspace" aria-labelledby="app-title">
+      <section class="workspace app-screen active" id="searchScreen" data-screen="search" aria-labelledby="app-title">
         <div class="title-row">
           <div>
             <p class="eyebrow">Deutsche Bahn route monitor</p>
@@ -152,7 +152,7 @@
         <div class="toast" id="appToast" role="status" aria-live="polite"></div>
       </section>
 
-      <aside class="saved-panel" aria-labelledby="saved-title">
+      <aside class="saved-panel app-screen" id="savedScreen" data-screen="saved" aria-labelledby="saved-title" hidden>
         <div class="panel-head">
           <div>
             <p class="eyebrow">Saved block</p>
@@ -165,6 +165,17 @@
         <div id="savedRoutes" class="saved-routes"></div>
       </aside>
     </main>
+
+    <nav class="bottom-tabs" aria-label="Main sections">
+      <button class="tab-button active" type="button" data-target-screen="search" aria-controls="searchScreen" aria-selected="true">
+        <span aria-hidden="true">⌕</span>
+        Search
+      </button>
+      <button class="tab-button" type="button" data-target-screen="saved" aria-controls="savedScreen" aria-selected="false">
+        <span aria-hidden="true">▤</span>
+        Saved
+      </button>
+    </nav>
 
     <template id="routeCardTemplate">
       <article class="route-card">
@@ -197,6 +208,6 @@
       </article>
     </template>
 
-    <script src="./app.js" type="module"></script>
+    <script src="./app.js?v=4" type="module"></script>
   </body>
 </html>
